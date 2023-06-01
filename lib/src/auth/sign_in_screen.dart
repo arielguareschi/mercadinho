@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:mercadinho/src/auth/sign_up_screen.dart';
 import 'package:mercadinho/src/config/custom_colors.dart';
 
 import 'components/custom_text_field.dart';
@@ -113,8 +114,10 @@ class SignInScreen extends StatelessWidget {
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18))),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                        ),
                         onPressed: () {},
                         child: const Text(
                           'Entrar',
@@ -176,7 +179,13 @@ class SignInScreen extends StatelessWidget {
                             color: Colors.green,
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (c) {
+                              return SignUpScreen();
+                            }),
+                          );
+                        },
                         child: const Text(
                           'Criar conta',
                           style: TextStyle(
