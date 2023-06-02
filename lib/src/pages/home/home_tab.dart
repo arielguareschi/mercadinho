@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:mercadinho/src/config/app_data.dart' as app_data;
 import 'package:mercadinho/src/config/custom_colors.dart';
-import 'package:badges/badges.dart' as packageBadge;
+import 'package:badges/badges.dart' as package_badge;
 
-class HomeTab extends StatelessWidget {
+import 'components/category_tile.dart';
+
+class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
+
+  @override
+  State<HomeTab> createState() => _HomeTabState();
+}
+
+class _HomeTabState extends State<HomeTab> {
+  String selectedCategory = 'Frutas';
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +52,8 @@ class HomeTab extends StatelessWidget {
             ),
             child: GestureDetector(
               onTap: () {},
-              child: packageBadge.Badge(
-                badgeStyle: packageBadge.BadgeStyle(
+              child: package_badge.Badge(
+                badgeStyle: package_badge.BadgeStyle(
                   badgeColor: CustomColors.customConstrastColor,
                 ),
                 badgeContent: const Text(
@@ -91,10 +101,47 @@ class HomeTab extends StatelessWidget {
                         style: BorderStyle.none,
                       ))),
             ),
-          )
+          ),
           // Categorias
-
+          Container(
+            padding: const EdgeInsets.only(left: 25),
+            height: 40,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (_, index) {
+                return CategoryTile(
+                  category: app_data.categories[index],
+                  isSelected: app_data.categories[index] == selectedCategory,
+                  onPressed: () {
+                    setState(() {
+                      selectedCategory = app_data.categories[index];
+                    });
+                  },
+                );
+              },
+              separatorBuilder: (_, index) => const SizedBox(width: 10),
+              itemCount: app_data.categories.length,
+            ),
+          ),
           // Grid
+          Expanded(
+            child: GridView.builder(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              physics: const BouncingScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: 9 / 11.5,
+              ),
+              itemCount: app_data.items.length,
+              itemBuilder: (_, index) {
+                return Container(
+                  color: Colors.red,
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
