@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mercadinho/src/pages/cart/cart_tab.dart';
 import 'package:mercadinho/src/pages/home/home_tab.dart';
 
 class BaseScreen extends StatefulWidget {
@@ -21,15 +22,9 @@ class _BaseScreenState extends State<BaseScreen> {
         controller: pageController,
         children: [
           const HomeTab(),
-          Container(
-            color: Colors.yellow,
-          ),
-          Container(
-            color: Colors.blue,
-          ),
-          Container(
-            color: Colors.purple,
-          ),
+          CartTab(),
+          Container(color: Colors.blue),
+          Container(color: Colors.purple),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
