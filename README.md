@@ -1,6 +1,6 @@
 # mercadinho
 
-A new Flutter project.
+Um aplicativo para mercadinho
 
 ## Getting Started
 

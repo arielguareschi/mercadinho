@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mercadinho/src/config/custom_colors.dart';
-import 'package:mercadinho/src/models/cart_item_mode.dart';
+import 'package:mercadinho/src/models/cart_item_model.dart';
 import 'package:mercadinho/src/pages/common_widgets/quantity_widget.dart';
 import 'package:mercadinho/src/services/utils_services.dart';
 

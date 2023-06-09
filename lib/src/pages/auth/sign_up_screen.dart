@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:mercadinho/src/pages/auth/components/custom_text_field.dart';
+import 'package:mercadinho/src/pages/common_widgets/custom_text_field.dart';
 import 'package:mercadinho/src/config/custom_colors.dart';
 
 class SignUpScreen extends StatelessWidget {
