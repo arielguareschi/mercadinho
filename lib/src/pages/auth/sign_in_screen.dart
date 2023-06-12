@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mercadinho/src/pages/auth/sign_up_screen.dart';
 import 'package:mercadinho/src/pages/base/base_screen.dart';
 import 'package:mercadinho/src/config/custom_colors.dart';
+import 'package:mercadinho/src/pages/common_widgets/app_name_widget.dart';
 
 import '../common_widgets/custom_text_field.dart';
 
@@ -26,42 +27,9 @@ class SignInScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // Nome do app
-                    Text.rich(
-                      TextSpan(
-                        style: const TextStyle(
-                          fontSize: 40,
-                        ),
-                        children: [
-                          const TextSpan(
-                            text: 'Mer',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const TextSpan(
-                            text: 'ca',
-                            style: TextStyle(
-                              color: Colors.yellow,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TextSpan(
-                            text: 'di',
-                            style: TextStyle(
-                              color: CustomColors.customConstrastColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const TextSpan(
-                            text: 'nho',
-                            style: TextStyle(
-                              color: Colors.brown,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
+                    const AppNameWidget(
+                      greenTitleColor: Colors.white,
+                      textSize: 50,
                     ),
                     // Categorias
                     SizedBox(

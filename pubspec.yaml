@@ -39,10 +39,15 @@ dependencies:
   mask_text_input_formatter: ^2.4.0
   badges: ^3.1.1
   intl: ^0.18.1
+  qr_flutter: ^4.1.0
+  add_to_cart_animation: ^0.0.7
+  fluttertoast: ^8.2.2
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -50,6 +55,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -93,3 +99,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/app_images/app_icon.png"
+  remove_alpha_ios: true

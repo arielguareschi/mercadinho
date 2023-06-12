@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mercadinho/src/config/custom_colors.dart';
 import 'package:mercadinho/src/models/cart_item_model.dart';
 import 'package:mercadinho/src/pages/cart/components/cart_tile.dart';
+import 'package:mercadinho/src/pages/common_widgets/payment_dialog.dart';
 import 'package:mercadinho/src/services/utils_services.dart';
 import 'package:mercadinho/src/config/app_data.dart' as app_data;
 
@@ -18,6 +19,8 @@ class _CartTabState extends State<CartTab> {
   void removeItemFromCart(CartItemModel cartItem) {
     setState(() {
       app_data.cartItems.remove(cartItem);
+      utilServices.showToast(
+          message: "${cartItem.item.itemName} removido(a) do carrinho!");
     });
   }
 
@@ -93,7 +96,19 @@ class _CartTabState extends State<CartTab> {
                     ),
                     onPressed: () async {
                       bool? result = await showOrderConfirmation();
-                      print(result);
+                      if (result ?? false) {
+                        showDialog(
+                          context: context,
+                          builder: (_) {
+                            return PaymentDialog(
+                              order: app_data.orders.first,
+                            );
+                          },
+                        );
+                      } else {
+                        utilServices.showToast(
+                            message: "Pedido nao confirmado", isError: true);
+                      }
                     },
                     child: const Text(
                       'Concluir Pedido',
