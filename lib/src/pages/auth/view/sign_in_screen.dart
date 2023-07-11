@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mercadinho/src/config/custom_colors.dart';
 import 'package:mercadinho/src/pages/auth/controller/auth_controller.dart';
+import 'package:mercadinho/src/pages/auth/view/components/forgot_password_dialog.dart';
 import 'package:mercadinho/src/pages/common_widgets/app_name_widget.dart';
+import 'package:mercadinho/src/pages/common_widgets/custom_text_field.dart';
 import 'package:mercadinho/src/pages_routes/app_pages.dart';
-
-import '../common_widgets/custom_text_field.dart';
+import 'package:mercadinho/src/services/utils_services.dart';
+import 'package:mercadinho/src/services/validators.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
@@ -15,6 +17,8 @@ class SignInScreen extends StatelessWidget {
   // controlador do campo
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  final utilServices = UtilServices();
 
   @override
   Widget build(BuildContext context) {
@@ -82,31 +86,14 @@ class SignInScreen extends StatelessWidget {
                         label: "E-mail",
                         icon: Icons.mail,
                         controller: emailController,
-                        validator: (email) {
-                          if (email == null || email.isEmpty) {
-                            return "Digite seu e-mail!";
-                          }
-
-                          if (!email.isEmail) {
-                            return "Digite um e-mail valido";
-                          }
-                          return null;
-                        },
+                        validator: emailValidator,
                       ),
                       CustomTextField(
                         label: "Senha",
                         icon: Icons.lock,
                         isSecret: true,
                         controller: passwordController,
-                        validator: (password) {
-                          if (password == null || password.isEmpty) {
-                            return "Digite sua senha!";
-                          }
-                          if (password.length < 7) {
-                            return "Digite uma senha com pelo menos 7 caracteres";
-                          }
-                          return null;
-                        },
+                        validator: passwordValidator,
                       ),
                       // botao de entrar
                       SizedBox(
@@ -159,7 +146,21 @@ class SignInScreen extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            final bool? result = await showDialog(
+                              context: context,
+                              builder: (_) {
+                                return ForgotPasswordDialog(
+                                  email: emailController.text,
+                                );
+                              },
+                            );
+                            if (result ?? false) {
+                              utilServices.showToast(
+                                message: "Um link foi enviado para seu e-mail",
+                              );
+                            }
+                          },
                           child: Text(
                             'Esqueceu a senha?',
                             style: TextStyle(

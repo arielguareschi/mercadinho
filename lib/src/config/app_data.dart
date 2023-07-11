@@ -1,6 +1,6 @@
 import 'package:mercadinho/src/models/cart_item_model.dart';
-import 'package:mercadinho/src/models/user_model.dart';
 import 'package:mercadinho/src/models/order_model.dart';
+import 'package:mercadinho/src/models/user_model.dart';
 
 import '../models/item_model.dart';
 
