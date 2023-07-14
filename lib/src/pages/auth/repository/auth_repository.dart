@@ -7,8 +7,10 @@ import 'package:mercadinho/src/services/http_manager.dart';
 class AuthRepository {
   final HttpManager _httpManager = HttpManager();
 
-  Future<AuthResult> signIn(
-      {required String email, required String password}) async {
+  Future<AuthResult> signIn({
+    required String email,
+    required String password,
+  }) async {
     final result = await _httpManager.restResquest(
       url: Endpoints.signin,
       method: HttpMethods.post,
