@@ -1,12 +1,12 @@
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:add_to_cart_animation/add_to_cart_icon.dart';
+import 'package:badges/badges.dart' as package_badge;
 import 'package:flutter/material.dart';
 import 'package:mercadinho/src/config/app_data.dart' as app_data;
 import 'package:mercadinho/src/config/custom_colors.dart';
-import 'package:badges/badges.dart' as package_badge;
 import 'package:mercadinho/src/pages/common_widgets/app_name_widget.dart';
 import 'package:mercadinho/src/pages/common_widgets/custom_shimmer.dart';
-import 'package:mercadinho/src/pages/home/components/item_tile.dart';
+import 'package:mercadinho/src/pages/home/view/components/item_tile.dart';
 import 'package:mercadinho/src/services/utils_services.dart';
 
 import 'components/category_tile.dart';
@@ -37,7 +37,7 @@ class _HomeTabState extends State<HomeTab> {
     super.initState();
 
     Future.delayed(
-      const Duration(seconds: 3),
+      const Duration(seconds: 1),
       () {
         setState(() {
           isLoading = false;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mercadinho/src/pages/cart/cart_tab.dart';
-import 'package:mercadinho/src/pages/home/home_tab.dart';
+import 'package:mercadinho/src/pages/home/view/home_tab.dart';
 import 'package:mercadinho/src/pages/orders/orders_tab.dart';
 import 'package:mercadinho/src/pages/profile/profile_tab.dart';
 
