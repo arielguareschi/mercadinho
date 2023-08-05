@@ -3,15 +3,15 @@ import 'package:get/get.dart';
 import 'package:mercadinho/src/config/custom_colors.dart';
 import 'package:mercadinho/src/models/item_model.dart';
 import 'package:mercadinho/src/pages/base/controller/navigation_controller.dart';
+import 'package:mercadinho/src/pages/cart/controller/cart_controller.dart';
 import 'package:mercadinho/src/pages/common_widgets/quantity_widget.dart';
 import 'package:mercadinho/src/services/utils_services.dart';
 
 class ProductScreen extends StatefulWidget {
-  final ItemModel item;
+  final ItemModel item = Get.arguments;
 
-  const ProductScreen({
+  ProductScreen({
     super.key,
-    required this.item,
   });
 
   @override
@@ -24,6 +24,7 @@ class _ProductScreenState extends State<ProductScreen> {
   int cartItemQuantity = 1;
 
   final navigationController = Get.find<NavigationController>();
+  final cartController = Get.find<CartController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,7 +122,12 @@ class _ProductScreenState extends State<ProductScreen> {
                             // fechar a tela
                             Get.back();
 
-                            //
+                            cartController.addItemToCart(
+                              item: widget.item,
+                              quantity: cartItemQuantity,
+                            );
+
+                            // vai para a aba
                             navigationController
                                 .navigatePageView(NavigationTabs.cart);
                           },

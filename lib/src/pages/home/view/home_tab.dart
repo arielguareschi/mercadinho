@@ -4,6 +4,7 @@ import 'package:badges/badges.dart' as package_badge;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mercadinho/src/config/custom_colors.dart';
+import 'package:mercadinho/src/pages/cart/controller/cart_controller.dart';
 import 'package:mercadinho/src/pages/common_widgets/app_name_widget.dart';
 import 'package:mercadinho/src/pages/common_widgets/custom_shimmer.dart';
 import 'package:mercadinho/src/pages/home/controller/home_controller.dart';
@@ -51,12 +52,16 @@ class _HomeTabState extends State<HomeTab> {
                 badgeStyle: package_badge.BadgeStyle(
                   badgeColor: CustomColors.customConstrastColor,
                 ),
-                badgeContent: const Text(
-                  '2',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
+                badgeContent: GetBuilder<CartController>(
+                  builder: (controller) {
+                    return Text(
+                      controller.getCartTotalItems().toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
+                    );
+                  },
                 ),
                 child: AddToCartIcon(
                   key: globalKeyCartItems,
