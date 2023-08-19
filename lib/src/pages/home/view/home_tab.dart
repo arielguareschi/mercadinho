@@ -4,6 +4,7 @@ import 'package:badges/badges.dart' as package_badge;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mercadinho/src/config/custom_colors.dart';
+import 'package:mercadinho/src/pages/base/controller/navigation_controller.dart';
 import 'package:mercadinho/src/pages/cart/controller/cart_controller.dart';
 import 'package:mercadinho/src/pages/common_widgets/app_name_widget.dart';
 import 'package:mercadinho/src/pages/common_widgets/custom_shimmer.dart';
@@ -24,6 +25,8 @@ class _HomeTabState extends State<HomeTab> {
   GlobalKey<CartIconKey> globalKeyCartItems = GlobalKey<CartIconKey>();
   final searchController = TextEditingController();
   late Function(GlobalKey) runAddToCardAnimation;
+
+  final navigationController = Get.find<NavigationController>();
 
   void itemSelectedCartAnimations(GlobalKey gkImage) {
     runAddToCardAnimation(gkImage);
@@ -46,31 +49,33 @@ class _HomeTabState extends State<HomeTab> {
               top: 15,
               right: 15,
             ),
-            child: GestureDetector(
-              onTap: () {},
-              child: package_badge.Badge(
-                badgeStyle: package_badge.BadgeStyle(
-                  badgeColor: CustomColors.customConstrastColor,
-                ),
-                badgeContent: GetBuilder<CartController>(
-                  builder: (controller) {
-                    return Text(
+            child: GetBuilder<CartController>(
+              builder: (controller) {
+                return GestureDetector(
+                  onTap: () {
+                    navigationController.navigatePageView(NavigationTabs.cart);
+                  },
+                  child: package_badge.Badge(
+                    badgeStyle: package_badge.BadgeStyle(
+                      badgeColor: CustomColors.customConstrastColor,
+                    ),
+                    badgeContent: Text(
                       controller.getCartTotalItems().toString(),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
                       ),
-                    );
-                  },
-                ),
-                child: AddToCartIcon(
-                  key: globalKeyCartItems,
-                  icon: Icon(
-                    Icons.shopping_cart,
-                    color: CustomColors.customSwatchColor,
+                    ),
+                    child: AddToCartIcon(
+                      key: globalKeyCartItems,
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        color: CustomColors.customSwatchColor,
+                      ),
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
           ),
         ],

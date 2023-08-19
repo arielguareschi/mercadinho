@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mercadinho/src/config/custom_colors.dart';
 import 'package:mercadinho/src/models/item_model.dart';
+import 'package:mercadinho/src/pages/cart/controller/cart_controller.dart';
 import 'package:mercadinho/src/pages_routes/app_pages.dart';
 import 'package:mercadinho/src/services/utils_services.dart';
 
@@ -23,6 +24,8 @@ class _ItemTileState extends State<ItemTile> {
   final GlobalKey imageGk = GlobalKey();
 
   UtilServices utilServices = UtilServices();
+
+  final cartController = Get.find<CartController>();
 
   IconData tileIcon = Icons.add_shopping_cart;
 
@@ -112,6 +115,9 @@ class _ItemTileState extends State<ItemTile> {
               child: InkWell(
                 onTap: () {
                   switchIcon();
+
+                  cartController.addItemToCart(item: widget.item);
+
                   widget.cartAnimationMethod(imageGk);
                 },
                 child: Ink(

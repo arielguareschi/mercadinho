@@ -1,18 +1,23 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mercadinho/src/models/cart_item_model.dart';
 import 'package:mercadinho/src/models/item_model.dart';
+import 'package:mercadinho/src/models/order_model.dart';
 import 'package:mercadinho/src/pages/auth/controller/auth_controller.dart';
-import 'package:mercadinho/src/pages/cart/cart_result/cart_result.dart';
 import 'package:mercadinho/src/pages/cart/repository/cart_repository.dart';
+import 'package:mercadinho/src/pages/cart/result/cart_result.dart';
+import 'package:mercadinho/src/pages/common_widgets/payment_dialog.dart';
 import 'package:mercadinho/src/services/utils_services.dart';
 
 class CartController extends GetxController {
   final cartRepository = CartRepository();
 
-  final autController = Get.find<AuthController>();
+  final authController = Get.find<AuthController>();
   final utilServices = UtilServices();
 
   List<CartItemModel> cartItems = [];
+
+  bool ischeckoutLoading = false;
 
   @override
   void onInit() {
@@ -34,12 +39,46 @@ class CartController extends GetxController {
         : cartItems.map((e) => e.quantity).reduce((a, b) => a + b);
   }
 
+  void setCheckoutLoading(bool value) {
+    ischeckoutLoading = value;
+    update();
+  }
+
+  Future checkoutCart() async {
+    setCheckoutLoading(true);
+
+    CartResult<OrderModel> result = await cartRepository.checkoutCart(
+      token: authController.user.token!,
+      total: cartTotalPrice(),
+    );
+
+    setCheckoutLoading(false);
+
+    result.when(
+      success: (order) {
+        cartItems.clear();
+        update();
+        showDialog(
+          context: Get.context!,
+          builder: (_) {
+            return PaymentDialog(
+              order: order,
+            );
+          },
+        );
+      },
+      error: (message) {
+        utilServices.showToast(message: message);
+      },
+    );
+  }
+
   Future<bool> changeItemQuantity({
     required CartItemModel item,
     required int quantity,
   }) async {
     final result = await cartRepository.changeItemQuantity(
-      token: autController.user.token!,
+      token: authController.user.token!,
       cartItemId: item.id,
       quantity: quantity,
     );
@@ -65,8 +104,8 @@ class CartController extends GetxController {
   Future<void> getCartItems() async {
     final CartResult<List<CartItemModel>> result =
         await cartRepository.getCartItems(
-      token: autController.user.token!,
-      userId: autController.user.id!,
+      token: authController.user.token!,
+      userId: authController.user.id!,
     );
 
     result.when(
@@ -102,8 +141,8 @@ class CartController extends GetxController {
       );
     } else {
       final CartResult<String> result = await cartRepository.addItemToCart(
-        userId: autController.user.id!,
-        token: autController.user.token!,
+        userId: authController.user.id!,
+        token: authController.user.token!,
         productId: item.id,
         quantity: quantity,
       );

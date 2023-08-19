@@ -1,6 +1,7 @@
 import 'package:mercadinho/src/constants/endpoints.dart';
 import 'package:mercadinho/src/models/cart_item_model.dart';
-import 'package:mercadinho/src/pages/cart/cart_result/cart_result.dart';
+import 'package:mercadinho/src/models/order_model.dart';
+import 'package:mercadinho/src/pages/cart/result/cart_result.dart';
 import 'package:mercadinho/src/services/http_manager.dart';
 
 class CartRepository {
@@ -28,6 +29,29 @@ class CartRepository {
       return CartResult<List<CartItemModel>>.success(data);
     } else {
       return CartResult.error('Erro ao recuperar os itens do carrinho');
+    }
+  }
+
+  Future<CartResult<OrderModel>> checkoutCart({
+    required String token,
+    required double total,
+  }) async {
+    final result = await _httpManager.restResquest(
+      url: Endpoints.checkout,
+      method: HttpMethods.post,
+      headers: {
+        'X-Parse-Session-Token': token,
+      },
+      body: {
+        'total': total,
+      },
+    );
+
+    if (result['result'] != null) {
+      final order = OrderModel.fromJson(result['result']);
+      return CartResult<OrderModel>.success(order);
+    } else {
+      return CartResult.error('Nao foi possivel fechar o pedido');
     }
   }
 

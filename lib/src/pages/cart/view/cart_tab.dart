@@ -4,7 +4,6 @@ import 'package:mercadinho/src/config/app_data.dart' as app_data;
 import 'package:mercadinho/src/config/custom_colors.dart';
 import 'package:mercadinho/src/pages/cart/controller/cart_controller.dart';
 import 'package:mercadinho/src/pages/cart/view/components/cart_tile.dart';
-import 'package:mercadinho/src/pages/common_widgets/payment_dialog.dart';
 import 'package:mercadinho/src/services/utils_services.dart';
 
 class CartTab extends StatefulWidget {
@@ -16,6 +15,8 @@ class CartTab extends StatefulWidget {
 
 class _CartTabState extends State<CartTab> {
   final UtilServices utilServices = UtilServices();
+
+  final cartController = Get.find<CartController>();
 
   double cartTotalPrice() {
     double total = 0;
@@ -37,14 +38,28 @@ class _CartTabState extends State<CartTab> {
           Expanded(
             child: GetBuilder<CartController>(
               builder: (controller) {
-                return ListView.builder(
-                  itemCount: controller.cartItems.length,
-                  itemBuilder: (_, int index) {
-                    return CartTile(
-                      cartItem: controller.cartItems[index],
-                    );
-                  },
-                );
+                if (controller.cartItems.isEmpty) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.remove_shopping_cart,
+                        size: 40,
+                        color: CustomColors.customSwatchColor,
+                      ),
+                      const Text("Nâo há items no carrinho"),
+                    ],
+                  );
+                } else {
+                  return ListView.builder(
+                    itemCount: controller.cartItems.length,
+                    itemBuilder: (_, int index) {
+                      return CartTile(
+                        cartItem: controller.cartItems[index],
+                      );
+                    },
+                  );
+                }
               },
             ),
           ),
@@ -87,35 +102,36 @@ class _CartTabState extends State<CartTab> {
                 ),
                 SizedBox(
                   height: 50,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: CustomColors.customSwatchColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                    ),
-                    onPressed: () async {
-                      bool? result = await showOrderConfirmation();
-                      if (result ?? false) {
-                        showDialog(
-                          context: context,
-                          builder: (_) {
-                            return PaymentDialog(
-                              order: app_data.orders.first,
-                            );
-                          },
-                        );
-                      } else {
-                        utilServices.showToast(
-                            message: "Pedido nao confirmado", isError: true);
-                      }
+                  child: GetBuilder<CartController>(
+                    builder: (controller) {
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: CustomColors.customSwatchColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                        ),
+                        onPressed: controller.ischeckoutLoading
+                            ? null
+                            : () async {
+                                bool? result = await showOrderConfirmation();
+                                if (result ?? false) {
+                                  cartController.checkoutCart();
+                                } else {
+                                  utilServices.showToast(
+                                      message: "Pedido não confirmado!");
+                                }
+                              },
+                        child: controller.ischeckoutLoading
+                            ? const CircularProgressIndicator()
+                            : const Text(
+                                'Concluir Pedido',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                      );
                     },
-                    child: const Text(
-                      'Concluir Pedido',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
                   ),
                 ),
               ],
