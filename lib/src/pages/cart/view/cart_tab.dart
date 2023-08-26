@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mercadinho/src/config/app_data.dart' as app_data;
 import 'package:mercadinho/src/config/custom_colors.dart';
 import 'package:mercadinho/src/pages/cart/controller/cart_controller.dart';
 import 'package:mercadinho/src/pages/cart/view/components/cart_tile.dart';
@@ -17,14 +16,6 @@ class _CartTabState extends State<CartTab> {
   final UtilServices utilServices = UtilServices();
 
   final cartController = Get.find<CartController>();
-
-  double cartTotalPrice() {
-    double total = 0;
-    for (var item in app_data.cartItems) {
-      total += item.totalPrice();
-    }
-    return total;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +102,8 @@ class _CartTabState extends State<CartTab> {
                             borderRadius: BorderRadius.circular(18),
                           ),
                         ),
-                        onPressed: controller.ischeckoutLoading
+                        onPressed: (controller.ischeckoutLoading ||
+                                controller.cartItems.isEmpty)
                             ? null
                             : () async {
                                 bool? result = await showOrderConfirmation();

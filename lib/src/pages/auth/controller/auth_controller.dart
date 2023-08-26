@@ -14,11 +14,11 @@ class AuthController extends GetxController {
   final UtilServices utilServices = UtilServices();
   UserModel user = UserModel();
 
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   validateToken();
-  // }
+  @override
+  void onInit() {
+    super.onInit();
+    validateToken();
+  }
 
   Future<void> validateToken() async {
     String? token = await utilServices.getLocalData(key: StorageKeys.token);
@@ -67,6 +67,36 @@ class AuthController extends GetxController {
         );
       },
     );
+  }
+
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    isLoading.value = true;
+    final result = await repository.changePassword(
+      email: user.email!,
+      currentPassword: currentPassword,
+      newPassword: newPassword,
+      token: user.token!,
+    );
+
+    isLoading.value = false;
+
+    if (result) {
+      // mensagem
+      utilServices.showToast(
+        message: 'Senha alterada com sucesso',
+      );
+      signOut();
+      // logout
+    } else {
+      // erro
+      utilServices.showToast(
+        message: 'Senha atual incorreta!',
+        isError: true,
+      );
+    }
   }
 
   Future<void> resetPassword(String email) async {

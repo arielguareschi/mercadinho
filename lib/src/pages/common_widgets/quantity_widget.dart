@@ -46,7 +46,7 @@ class QuantityWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6),
             child: Text(
-              "$value ${suffixText}",
+              "$value $suffixText",
               style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
@@ -74,7 +74,6 @@ class _QuantityButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const _QuantityButton({
-    super.key,
     required this.color,
     required this.icon,
     required this.onPressed,
